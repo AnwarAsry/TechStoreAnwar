@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update product</title>
+    <style>
+        form p {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+<h1>Update product</h1>
+<form method="post" th:action="@{/products/{id}(id=${product.id})}">
+    <input type="hidden" name="_method" value="PUT">
+    <p>
+        <label>Name: </label>
+        <input type="text" name="name"
+               th:value="${product.name}">
+    </p>
+    <p>
+        <label>Category: </label>
+        <input type="text" name="category"
+               th:value="${product.category}">
+    </p>
+    <p>
+        <label>Price: </label>
+        <input type="number" name="price"
+               th:value="${product.price}">
+    </p>
+    <p>
+        <label>StockQuantity: </label>
+        <input type="number" name="stockQuantity"
+               th:value="${product.stockQuantity}">
+    </p>
+    <button type="submit">Update product</button>
+    <button th:href="@{/products}">Cancel</button>
+
+</form>
+</body>
+</html>
