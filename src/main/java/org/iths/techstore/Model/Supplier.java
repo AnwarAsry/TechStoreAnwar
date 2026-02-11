@@ -8,9 +8,13 @@ public class Supplier {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false, name = "companyname")
     private String companyName;
+    @Column(nullable = false)
     private String country;
+    @Column(nullable = false, name = "contactperson")
     private String contactPerson;
+    @Column(nullable = false)
     private String email;
 
     // Constructors

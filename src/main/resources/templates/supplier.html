@@ -9,8 +9,8 @@
 <p><strong>Contact Name:</strong> <span th:text="${supplier.contactPerson}"></span></p>
 <p><strong>Contact email:</strong> <span th:text="${supplier.email}"></span></p>
 <p><strong>Country:</strong> <span th:text="${supplier.country}"></span></p>
-<a th:href="@{/suppliers/{id}/edit(id=${suppliers.id})}">Edit Supplier</a>
-<form th:action="@{/suppliers/{id}(id=${suppliers.id})}"
+<a th:href="@{/suppliers/{id}/edit(id=${supplier.id})}">Edit Supplier</a>
+<form th:action="@{/suppliers/{id}(id=${supplier.id})}"
       method="post">
     <input type="hidden" name="_method" value="delete"/>
     <button type="submit">Delete</button>

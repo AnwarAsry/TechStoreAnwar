@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/supplier")
+@RequestMapping("/suppliers")
 public class SupplierController {
 
     private final SupplierService supplierService;
