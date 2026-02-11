@@ -12,6 +12,7 @@ public class Product {
     private String name;
     private String category;
     private int price;
+    @Column(name = "stockquantity")
     private int stockQuantity;
 
     public Product() {
