@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="'TechStore - ' + ${supplier.companyName}"></title>
+    <style>
+        .pageTitle {
+            font-size: 34px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .supplier-country {
+            font-size: 20px;
+            color: #94a3b8;
+            margin-bottom: 30px;
+        }
+
+
+        /*.container {*/
+        /*    width: 600px;*/
+        /*    margin: 0 auto;*/
+        /*    display: flex;*/
+        /*    flex-direction: column;*/
+        /*    gap: 10px;*/
+        /*}*/
+
+        .container {
+            max-width: 750px;
+            margin: 60px auto;
+            padding: 40px;
+            border-radius: 18px;
+            color: #f8fafc;
+            background: linear-gradient(135deg, #1e293b, #334155);
+            box-shadow: 0 20px 50px rgba(15, 23, 42, 0.35);
+        }
+
+        .infoField {
+            font-size: 20px;
+            margin-bottom: 18px;
+        }
+
+        .infoField strong {
+            margin-bottom: 4px;
+            font-size: 16px;
+            color: #94a3b8;
+        }
+
+        .infoField span {
+            font-weight: 500;
+            color: #f1f5f9;
+        }
+
+        /*.btnsContainer {*/
+        /*    display: flex;*/
+        /*    justify-content: space-between;*/
+        /*    align-items: center;*/
+        /*}*/
+        .card-actions {
+            margin-top: 35px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .deleteBtn, .editBtn {
+            cursor: pointer;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            color: white;
+            transition: all 0.2s ease;
+        }
+
+        .deleteBtn {
+            background-color: #ef4444;
+        }
+
+        .deleteBtn:hover {
+            background-color: #dc2626;
+        }
+
+        .editBtn {
+            background-color: #3b82f6;
+        }
+
+        .editBtn:hover {
+            background-color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <section class="container">
+        <h2 class="pageTitle" th:text="${supplier.companyName}"></h2>
+        <p class="supplier-country" th:text="${supplier.country}"></p>
+        <p class="infoField">
+            <strong>Contact name:</strong>
+            <span th:text="${supplier.contactPerson}"></span>
+        </p>
+        <p class="infoField">
+            <strong>Contact email:</strong>
+            <span th:text="${supplier.email}"></span>
+        </p>
+        <div class="card-actions">
+            <form th:action="@{/suppliers/{id}(id=${supplier.id})}"
+                  method="post">
+                <input type="hidden" name="_method" value="delete"/>
+                <button class="deleteBtn" type="submit">Delete</button>
+            </form>
+            <a class="editBtn" th:href="@{/suppliers/{id}/edit(id=${supplier.id})}">Edit Supplier</a>
+        </div>
+    </section>
+</div>
+</body>
+</html>

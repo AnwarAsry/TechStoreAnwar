@@ -18,6 +18,13 @@ public class Product {
     public Product() {
     }
 
+    public Product(String name, String category, int price, int stockQuantity) {
+        this.name = name;
+        this.category = category;
+        this.price = price;
+        this.stockQuantity = stockQuantity;
+    }
+
     public Long getId() {
         return id;
     }

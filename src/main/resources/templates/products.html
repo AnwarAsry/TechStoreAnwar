@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout">
 <head>
     <meta charset="UTF-8">
     <title>Products</title>
@@ -94,44 +95,46 @@
     </style>
 </head>
 <body>
-<h1>All Products</h1>
-<div class="add-button">
-    <a th:href="@{/products/new}">
-        <button type="button">Add new product</button>
-    </a>
-</div>
+<div layout:fragment="content">
+    <h1>All Products</h1>
+    <div class="add-button">
+        <a th:href="@{/products/new}">
+            <button type="button">Add new product</button>
+        </a>
+    </div>
 
-<table>
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Category</th>
-        <th>Price</th>
-        <th>Stock Quantity</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="product : ${products}">
-        <td th:text="${product.name}"></td>
-        <td th:text="${product.category}"></td>
-        <td th:text="${product.price}"></td>
-        <td th:text="${product.stockQuantity}"></td>
-        <td class="action-buttons">
-            <a th:href="@{/products/{id}(id=${product.id})}">
-                <button type="button" class="info-btn">More information</button>
-            </a>
-            <a th:href="@{/products/{id}/edit(id=${product.id})}">
-                <button type="button" class="update-btn">Update product</button>
-            </a>
-            <form method="post" th:action="@{/products/{id}(id=${product.id})}" style="display: inline;">
-                <input type="hidden" name="_method" value="DELETE">
-                <button type="submit" class="delete-btn" onclick="return confirm('Are you sure?')">Delete product
-                </button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Stock Quantity</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${products}">
+            <td th:text="${product.name}"></td>
+            <td th:text="${product.category}"></td>
+            <td th:text="${product.price}"></td>
+            <td th:text="${product.stockQuantity}"></td>
+            <td class="action-buttons">
+                <a th:href="@{/products/{id}(id=${product.id})}">
+                    <button type="button" class="info-btn">More information</button>
+                </a>
+                <a th:href="@{/products/{id}/edit(id=${product.id})}">
+                    <button type="button" class="update-btn">Update product</button>
+                </a>
+                <form method="post" th:action="@{/products/{id}(id=${product.id})}" style="display: inline;">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit" class="delete-btn" onclick="return confirm('Are you sure?')">Delete product
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>
