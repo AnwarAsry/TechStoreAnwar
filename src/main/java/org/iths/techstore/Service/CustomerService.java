@@ -19,13 +19,13 @@ public class CustomerService {
         return customerRepository.findAll();
     }
 
+    public Customer createCustomer(Customer customer) {
+        return customerRepository.save(customer);
+    }
+
     public Customer getCustomerById(Long id) {
         return customerRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Customer with id: " + id + " doesn't exist."));
-    }
-
-    public Customer createCustomer(Customer customer) {
-        return customerRepository.save(customer);
     }
 
     public Customer updateCustomer(Long id, Customer customer) {

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Clients</title>
+
+    <style>
+
+        /* Page */
+
+        body {
+            font-family: 'Segoe UI', Arial;
+            background: #f5f6f8;
+            margin: 0;
+            padding: 30px;
+        }
+
+        /* Header */
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header h2 {
+            margin: 0;
+        }
+
+        /* ADD BUTTON */
+
+        .add-btn {
+            background: #22c55e;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Table */
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            text-align: left;
+            padding: 14px;
+            font-size: 13px;
+            color: #666;
+            background: #fafafa;
+            border-bottom: 1px solid #eee;
+        }
+
+        td {
+            padding: 16px 14px;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+
+        tr:hover {
+            background: #fafafa;
+        }
+
+        /* Person cell */
+
+        .person-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Avatar */
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+
+        /* Colour variants */
+
+        .c1 { background: #22c55e; }
+        .c2 { background: #a855f7; }
+        .c3 { background: #6366f1; }
+        .c4 { background: #0ea5e9; }
+        .c5 { background: #f97316; }
+
+        /* Name */
+
+        .name {
+            font-weight: 600;
+        }
+
+        /* Action botton */
+
+        .actions a {
+            margin-right: 8px;
+            font-size: 12px;
+            text-decoration: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            color: white;
+        }
+
+        .info { background: #6366f1; }
+        .update { background: #0ea5e9; }
+        .delete { background: #ef4444; }
+
+    </style>
+</head>
+
+<body>
+
+<!-- Header -->
+
+<div class="header">
+
+    <h2>Customer</h2>
+
+    <a th:href="@{/customers/new}"
+       class="add-btn">
+        Add customer
+    </a>
+
+</div>
+
+<!-- Table -->
+
+<table>
+
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone number</th>
+        <th>Created</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+    <tr th:each="customer, stat : ${customers}">
+
+        <!-- ID -->
+        <td th:text="${customer.id}"></td>
+
+        <!-- Name -->
+        <td>
+
+            <div class="person-cell">
+
+                <!-- Avatar -->
+                <div class="avatar"
+                     th:classappend="' c' + (${stat.index}%5 + 1)"
+                     th:text="${#strings.substring(
+                     customer.name,0,1)}">
+                </div>
+
+                <!-- Name-->
+                <div>
+
+                    <div class="name"
+                         th:text="${customer.name}">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </td>
+
+        <!-- Email -->
+        <td th:text="${customer.email}"></td>
+
+        <!-- Phone number -->
+        <td th:text="${customer.telefonNumber}"></td>
+
+        <!-- Created -->
+        <td th:text="${#temporals.format(
+        customer.createdDate,
+        'yyyy-MM-dd HH:mm')}">
+        </td>
+
+        <!-- Actions -->
+        <td class="actions">
+
+            <a th:href="@{/customers/{id}(id=${customer.id})}"
+               class="info">
+                Info
+            </a>
+
+            <a th:href="@{/customers/{id}/edit(id=${customer.id})}"
+               class="update">
+                Update
+            </a>
+
+            <form th:action="@{/customers/{id}(id=${customer.id})}"
+                  method="post"
+                  style="display:inline">
+
+                <input type="hidden"
+                       name="_method"
+                       value="DELETE"/>
+
+                <button class="delete"
+                        style="border:none;color:white;padding:6px 10px;border-radius:6px;">
+                    Delete
+                </button>
+
+            </form>
+
+        </td>
+
+    </tr>
+
+    </tbody>
+
+</table>
+
+</body>
+</html>

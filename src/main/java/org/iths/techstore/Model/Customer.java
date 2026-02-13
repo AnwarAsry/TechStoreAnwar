@@ -1,18 +1,27 @@
 package org.iths.techstore.Model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "customer")
+@Table(name="customer")
 public class Customer {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     private String name;
+
+    @Column(name = "telefon_number")
+    private String telefonNumber;
+
     private String email;
-    private LocalDateTime timestamp;
+
+    @CreationTimestamp
+    @Column(name = "created_date", updatable = false)
+    private LocalDateTime createdDate;
 
     public Customer() {
     }
@@ -33,6 +42,14 @@ public class Customer {
         this.name = name;
     }
 
+    public String getTelefonNumber() {
+        return telefonNumber;
+    }
+
+    public void setTelefonNumber(String telefonNumber) {
+        this.telefonNumber = telefonNumber;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -41,11 +58,11 @@ public class Customer {
         this.email = email;
     }
 
-    public LocalDateTime getTimestamp() {
-        return timestamp;
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
     }
 }
