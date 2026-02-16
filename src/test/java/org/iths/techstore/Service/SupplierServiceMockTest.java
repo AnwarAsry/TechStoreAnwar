@@ -5,6 +5,7 @@ import org.iths.techstore.Exceptions.SupplierNotValidFieldException;
 import org.iths.techstore.Model.Supplier;
 import org.iths.techstore.Repository.SupplierRepository;
 import org.iths.techstore.Validator.SupplierValidator;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,8 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class SupplierServiceMockTest {
@@ -27,6 +27,13 @@ public class SupplierServiceMockTest {
     private SupplierValidator supplierValidator;
     @InjectMocks
     private SupplierService supplierService;
+
+    Supplier supplier;
+
+    @BeforeEach
+    void setUp() {
+        supplier = new Supplier(1L, "Company A", "Country A", "Contact Person A", "some@ek.se");
+    }
 
     // Testing fetch all suppliers
     @Test
@@ -46,7 +53,6 @@ public class SupplierServiceMockTest {
     @Test
     @DisplayName("Test get supplier by id success")
     void getSupplierById() {
-        Supplier supplier = new Supplier(1L, "Company A", "Country A", "Contact Person A", "somw@ek.se");
         when(supplierRepository.findById(1L)).thenReturn(Optional.of(supplier));
 
         Supplier result = supplierService.getSupplierById(1L);
@@ -67,20 +73,15 @@ public class SupplierServiceMockTest {
     @Test
     @DisplayName("Test create supplier success")
     void createSupplierSuccess() {
-        Supplier supplier = new Supplier(1L, "Company A", "Country A", "Contact Person A", "somw@ek.se");
-        when(supplierValidator.isValidName(supplier.getCompanyName())).thenReturn(true);
-        when(supplierValidator.isValidName(supplier.getCountry())).thenReturn(true);
-        when(supplierValidator.isValidName(supplier.getContactPerson())).thenReturn(true);
-        when(supplierValidator.isValidEmail(supplier.getEmail())).thenReturn(true);
         when(supplierRepository.save(supplier)).thenReturn(supplier);
 
         Supplier createdSupplier = supplierService.createSupplier(supplier);
 
-        verify(supplierRepository).save(supplier);
-        verify(supplierValidator).isValidName(supplier.getCompanyName());
-        verify(supplierValidator).isValidName(supplier.getCountry());
-        verify(supplierValidator).isValidName(supplier.getContactPerson());
+        verify(supplierValidator).isValidCompanyName(supplier.getCompanyName());
+        verify(supplierValidator).isValidCountry(supplier.getCountry());
+        verify(supplierValidator).isValidContactPerson(supplier.getContactPerson());
         verify(supplierValidator).isValidEmail(supplier.getEmail());
+        verify(supplierRepository).save(supplier);
         assertEquals("Company A", createdSupplier.getCompanyName());
     }
 
@@ -88,48 +89,49 @@ public class SupplierServiceMockTest {
     @Test
     @DisplayName("Test create supplier invalid companyName field")
     void createSupplierInvalidCompanyName() {
-        Supplier supplier = new Supplier(1L, "", "Country A", "Contact Person A", "somw@ek.se");
-        when(supplierValidator.isValidName(supplier.getCompanyName())).thenReturn(false);
+        supplier.setCompanyName("");
+
+        doThrow(new SupplierNotValidFieldException("Invalid Value for company name"))
+                .when(supplierValidator).isValidCompanyName("");
 
         assertThrows(SupplierNotValidFieldException.class, () -> supplierService.createSupplier(supplier));
-        verify(supplierValidator).isValidName(supplier.getCompanyName());
+        verify(supplierValidator).isValidCompanyName(supplier.getCompanyName());
     }
 
     // Testing create supplier with invalid country
     @Test
     @DisplayName("Test create supplier invalid country field")
     void createSupplierInvalidCountry() {
-        Supplier supplier = new Supplier(1L, "Company A", "", "Contact Person A", "somw@ek.se");
-        when(supplierValidator.isValidName(supplier.getCompanyName())).thenReturn(true);
-        when(supplierValidator.isValidName(supplier.getCountry())).thenReturn(false);
+        supplier.setCountry("");
 
+        doThrow(new SupplierNotValidFieldException("Invalid Value for country"))
+                .when(supplierValidator).isValidCountry("");
 
         assertThrows(SupplierNotValidFieldException.class, () -> supplierService.createSupplier(supplier));
-        verify(supplierValidator).isValidName(supplier.getCountry());
+        verify(supplierValidator).isValidCountry(supplier.getCountry());
     }
 
     // Testing create supplier with invalid contact person
     @Test
     @DisplayName("Test create supplier invalid contactPerson field")
     void createSupplierInvalidContactPerson() {
-        Supplier supplier = new Supplier(1L, "Company A", "Country A", "", "somw@ek.se");
-        when(supplierValidator.isValidName(supplier.getCompanyName())).thenReturn(true);
-        when(supplierValidator.isValidName(supplier.getCountry())).thenReturn(true);
-        when(supplierValidator.isValidName(supplier.getContactPerson())).thenReturn(false);
+        supplier.setContactPerson("");
+
+        doThrow(new SupplierNotValidFieldException("Invalid Value for contact person"))
+                .when(supplierValidator).isValidContactPerson("");
 
         assertThrows(SupplierNotValidFieldException.class, () -> supplierService.createSupplier(supplier));
-        verify(supplierValidator).isValidName(supplier.getContactPerson());
+        verify(supplierValidator).isValidContactPerson(supplier.getContactPerson());
     }
 
     // Testing create supplier with invalid email
     @Test
     @DisplayName("Test create supplier invalid email field")
     void createSupplierInvalidEmail() {
-        Supplier supplier = new Supplier(1L, "Company A", "Country A", "Contact Person A", "sdjksj");
-        when(supplierValidator.isValidName(supplier.getCompanyName())).thenReturn(true);
-        when(supplierValidator.isValidName(supplier.getCountry())).thenReturn(true);
-        when(supplierValidator.isValidName(supplier.getContactPerson())).thenReturn(true);
-        when(supplierValidator.isValidEmail(supplier.getEmail())).thenReturn(false);
+        supplier.setEmail("sdjksj");
+
+        doThrow(new SupplierNotValidFieldException("Invalid Value for email"))
+                .when(supplierValidator).isValidEmail("sdjksj");
 
         assertThrows(SupplierNotValidFieldException.class, () -> supplierService.createSupplier(supplier));
         verify(supplierValidator).isValidEmail(supplier.getEmail());
@@ -139,84 +141,80 @@ public class SupplierServiceMockTest {
     @Test
     @DisplayName("Test update supplier success")
     void updateSupplierSuccess() {
-        Supplier existingSupplier = new Supplier(1L, "Company A", "Country A", "Contact Person A", "some@ek.se");
-
-        existingSupplier.setCompanyName("Updated Company A");
-        existingSupplier.setCountry("Updated Country A");
-        existingSupplier.setContactPerson("Updated Contact Person A");
-        existingSupplier.setEmail("updated@gmail.com");
+        supplier.setCompanyName("Updated Company A");
 
         when(supplierRepository.existsById(1L)).thenReturn(true);
-        when(supplierValidator.isValidName(existingSupplier.getCompanyName())).thenReturn(true);
-        when(supplierValidator.isValidName(existingSupplier.getCountry())).thenReturn(true);
-        when(supplierValidator.isValidName(existingSupplier.getContactPerson())).thenReturn(true);
-        when(supplierValidator.isValidEmail(existingSupplier.getEmail())).thenReturn(true);
-        when(supplierRepository.save(existingSupplier)).thenReturn(existingSupplier);
+        when(supplierRepository.save(supplier)).thenReturn(supplier);
 
-        Supplier updatedSupplier = supplierService.updateSupplier(1L, existingSupplier);
+        Supplier updatedSupplier = supplierService.updateSupplier(1L, supplier);
+
         verify(supplierRepository).save(updatedSupplier);
+        assertEquals("Updated Company A", updatedSupplier.getCompanyName());
     }
 
     // Testing update supplier by non-existing id
     @Test
     @DisplayName("Test update supplier non-existing id")
     void updateSupplierNonExistingId() {
-        Supplier updatedSupplier = new Supplier(1L, "Company A", "Country A", "Contact Person A", "some@ek.se");
         when(supplierRepository.existsById(1L)).thenReturn(false);
 
-        assertThrows(SupplierNotFoundException.class, () -> supplierService.updateSupplier(1L, updatedSupplier));
+        assertThrows(SupplierNotFoundException.class, () -> supplierService.updateSupplier(1L, supplier));
     }
 
     // Testing update supplier with invalid company name
     @Test
     @DisplayName("Test update supplier invalid companyName field")
     void updateSupplierInvalidCompanyName() {
-        Supplier supplier = new Supplier(1L, "", "Country A", "Contact Person A", "somw@ek.se");
+        supplier.setCompanyName("");
         when(supplierRepository.existsById(1L)).thenReturn(true);
-        when(supplierValidator.isValidName(supplier.getCompanyName())).thenReturn(false);
+
+        doThrow(new SupplierNotValidFieldException("Invalid Value for company name"))
+                .when(supplierValidator).isValidCompanyName("");
 
         assertThrows(SupplierNotValidFieldException.class, () -> supplierService.updateSupplier(1L, supplier));
-        verify(supplierValidator).isValidName(supplier.getCompanyName());
+        verify(supplierValidator).isValidCompanyName(supplier.getCompanyName());
     }
 
     // Testing update supplier with invalid country
     @Test
     @DisplayName("Test update supplier invalid country field")
     void updateSupplierInvalidCountry() {
-        Supplier supplier = new Supplier(1L, "Company A", "", "Contact Person A", "some@ek.se");
-        when(supplierRepository.existsById(1L)).thenReturn(true);
-        when(supplierValidator.isValidName(supplier.getCompanyName())).thenReturn(true);
-        when(supplierValidator.isValidName(supplier.getCountry())).thenReturn(false);
+        supplier.setCountry("");
 
+        when(supplierRepository.existsById(1L)).thenReturn(true);
+
+        doThrow(new SupplierNotValidFieldException("Invalid Value for country"))
+                .when(supplierValidator).isValidCountry("");
 
         assertThrows(SupplierNotValidFieldException.class, () -> supplierService.updateSupplier(1L, supplier));
-        verify(supplierValidator).isValidName(supplier.getCountry());
+        verify(supplierValidator).isValidCountry(supplier.getCountry());
     }
 
     // Testing update supplier with invalid contact person
     @Test
     @DisplayName("Test update supplier invalid contactPerson field")
     void updateSupplierInvalidContactPerson() {
-        Supplier supplier = new Supplier(1L, "Company A", "Country A", "", "some@ek.se");
+        supplier.setContactPerson("");
+
         when(supplierRepository.existsById(1L)).thenReturn(true);
-        when(supplierValidator.isValidName(supplier.getCompanyName())).thenReturn(true);
-        when(supplierValidator.isValidName(supplier.getCountry())).thenReturn(true);
-        when(supplierValidator.isValidName(supplier.getContactPerson())).thenReturn(true);
+
+        doThrow(new SupplierNotValidFieldException("Invalid Value for contact person"))
+                .when(supplierValidator).isValidContactPerson("");
 
         assertThrows(SupplierNotValidFieldException.class, () -> supplierService.updateSupplier(1L, supplier));
-        verify(supplierValidator).isValidName(supplier.getContactPerson());
+        verify(supplierValidator).isValidContactPerson(supplier.getContactPerson());
     }
 
     // Testing update supplier with invalid email
     @Test
     @DisplayName("Test update supplier invalid email field")
     void updateSupplierInvalidEmail() {
-        Supplier supplier = new Supplier(1L, "Company A", "Country A", "Contact Person A", "sdjksj");
+        supplier.setEmail("sdjksj");
+
         when(supplierRepository.existsById(1L)).thenReturn(true);
-        when(supplierValidator.isValidName(supplier.getCompanyName())).thenReturn(true);
-        when(supplierValidator.isValidName(supplier.getCountry())).thenReturn(true);
-        when(supplierValidator.isValidName(supplier.getContactPerson())).thenReturn(true);
-        when(supplierValidator.isValidEmail(supplier.getEmail())).thenReturn(false);
+
+        doThrow(new SupplierNotValidFieldException("Invalid Value for email"))
+                .when(supplierValidator).isValidEmail("sdjksj");
 
         assertThrows(SupplierNotValidFieldException.class, () -> supplierService.updateSupplier(1L, supplier));
         verify(supplierValidator).isValidEmail(supplier.getEmail());
@@ -226,17 +224,17 @@ public class SupplierServiceMockTest {
     @Test
     @DisplayName("Test delete supplier success")
     void deleteSupplierSuccess() {
-        when(supplierRepository.existsById(1L)).thenReturn(true);
-        supplierService.deleteSupplier(1L);
-        verify(supplierRepository).deleteById(1L);
+        when(supplierRepository.existsById(supplier.getId())).thenReturn(true);
+        supplierService.deleteSupplier(supplier.getId());
+        verify(supplierRepository).deleteById(supplier.getId());
     }
 
     // Testing delete supplier with non-existing id
     @Test
     @DisplayName("Test delete supplier non-existing id")
     void deleteSupplierNonExistingId() {
-        when(supplierRepository.existsById(1L)).thenReturn(false);
-        assertThrows(SupplierNotFoundException.class, () -> supplierService.deleteSupplier(1L));
-        verify(supplierRepository).existsById(1L);
+        when(supplierRepository.existsById(supplier.getId())).thenReturn(false);
+        assertThrows(SupplierNotFoundException.class, () -> supplierService.deleteSupplier(supplier.getId()));
+        verify(supplierRepository).existsById(supplier.getId());
     }
 }
