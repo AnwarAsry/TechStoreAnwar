@@ -3,15 +3,32 @@ package org.iths.techstore.Validator;
 import org.iths.techstore.Exceptions.ReviewNotFoundException;
 import org.iths.techstore.Exceptions.ReviewNotValidException;
 import org.iths.techstore.Model.Review;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ReviewValidatorTest {
     // Attribute
     ReviewValidator reviewValidator = new ReviewValidator();
+
+    // Test review
+    Review review;
+
+    // Setup review
+    @BeforeEach
+    void setUp() {
+        review = new Review(1L, "Samsung", 8, "Good product", LocalDate.now(), "Psy");
+    }
+
+    // Valid review
+    @Test
+    public void validateShouldNotThrowExceptionWhenReviewIsValid() {
+        assertDoesNotThrow(() -> reviewValidator.validate(review));
+    }
 
     // Review is null
     @Test
@@ -27,7 +44,7 @@ public class ReviewValidatorTest {
     @Test
     public void validateShouldThrowExceptionWhenReviewerNameIsNull() {
         // Arrange
-        Review review = new Review(1L, "Samsung", 90, "Good", LocalDate.now(), null);
+        Review review = new Review(1L, "Samsung", 9, "Good", LocalDate.now(), null);
 
         // Act / Assert
         assertThrows(ReviewNotValidException.class, () -> reviewValidator.validate(review));
@@ -38,7 +55,7 @@ public class ReviewValidatorTest {
     @Test
     public void validateShouldThrowExceptionWhenCommentIsNull() {
         // Arrange
-        Review review = new Review(1L, "Samsung", 90, null, LocalDate.now(), "Psy");
+        Review review = new Review(1L, "Samsung", 9, null, LocalDate.now(), "Psy");
 
         // Act / Assert
         assertThrows(ReviewNotValidException.class, () -> reviewValidator.validate(review));
