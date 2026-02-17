@@ -8,7 +8,7 @@ CREATE TABLE reviews
     reviewer_name VARCHAR(255)
 );
 
-INSERT INTO review (id, product_name, rating, comment, review_date, reviewer_name)
+INSERT INTO reviews (id, product_name, rating, comment, review_date, reviewer_name)
 VALUES ('1', 'Samsung Galaxy S23 Ultra', '9',
         'The camera quality is outstanding, especially in low light. The display is bright and smooth, and overall performance feels incredibly fast.',
         '2026-01-01', 'Psy'),

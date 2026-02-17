@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout">
+
+<head>
+
+    <title>TechStore - New review</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 700px;
+            margin: 40px auto;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .button {
+            background-color: blue;
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .box {
+            border: 1px solid gray;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <h2>New review</h2>
+
+    <div class="box">
+        <form th:action="@{/reviews}" method="post">
+
+            <label>Title:</label>
+            <input type="text" name="productName"/>
+
+            <br><br>
+
+            <label>Rating:</label>
+            <input type="number" name="rating"/>
+
+            <br><br>
+
+            <label>Comment:</label>
+            <textarea name="comment"></textarea>
+            <label>Reviewer:</label>
+            <textarea name="reviewerName"></textarea>
+
+            <br><br>
+
+            <button class="button" type="submit">Save</button>
+        </form>
+
+    </div>
+
+    <a class="button" th:href="@{/reviews}">Back to reviews ></a>
+</div>
+</body>
+</html>

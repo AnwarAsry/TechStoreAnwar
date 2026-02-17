@@ -25,36 +25,42 @@ public class ReviewController {
         return "reviews";
     }
 
+    // Get review
+    @GetMapping("/{id}")
+    public String getReview(Model model, @PathVariable long id) {
+        model.addAttribute("review", reviewService.getReviewById(id));
+        return "review";
+    }
+
     // Create new review
     @GetMapping("/new")
-    public String createReviewForm(Model model) {
-        model.addAttribute("review", new Review());
-        return "new-review";
+    public String createReviewForm() {
+        return "add-review";
     }
 
     // Save new review
-    @PostMapping("/save")
+    @PostMapping
     public String saveReview(@ModelAttribute Review review) {
-        reviewService.createReview(review);
-        return "redirect:/reviews";
+        Review newReview = reviewService.createReview(review);
+        return "redirect:/reviews/" + newReview.getId();
     }
 
-    // Edit existing review
-    @GetMapping("/edit/{id}")
-    public String editReviewForm(@PathVariable Long id, Model model) {
+    // Update existing review
+    @GetMapping("/{id}/edit")
+    public String updateReview(@PathVariable Long id, Model model) {
         model.addAttribute("review", reviewService.getReviewById(id));
         return "edit-review";
     }
 
-    // Update existing review
-    @PostMapping("/update/{id}")
+    // Submission of edited review
+    @PutMapping("/{id}")
     public String updateReview(@PathVariable Long id, @ModelAttribute Review review) {
-        reviewService.updateReview(id, review);
-        return "redirect:/reviews";
+        Review updatedReview = reviewService.updateReview(id, review);
+        return "redirect:/reviews/" + updatedReview.getId();
     }
 
     // Remove existing review
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public String deleteReview(@PathVariable Long id) {
         reviewService.deleteReview(id);
         return "redirect:/reviews";

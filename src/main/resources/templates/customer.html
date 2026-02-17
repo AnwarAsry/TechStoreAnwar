@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout">
 
 <head>
     <meta charset="UTF-8">
@@ -9,37 +9,39 @@
 
 <body>
 
-<h1>Customer Information</h1>
+<div layout:fragment="content">
 
-<table>
+    <h2>Customer Information</h2>
 
-    <tr>
-        <th>Name</th>
-        <td th:text="${customer.name}"></td>
-    </tr>
+    <table>
 
-    <tr>
-        <th>Telephone</th>
-        <td th:text="${customer.telefonNumber}"></td>
-    </tr>
+        <tr>
+            <th>Name</th>
+            <td th:text="${customer.name}"></td>
+        </tr>
 
-    <tr>
-        <th>Email</th>
-        <td th:text="${customer.email}"></td>
-    </tr>
+        <tr>
+            <th>Telephone</th>
+            <td th:text="${customer.telefonNumber}"></td>
+        </tr>
 
-    <tr>
-        <th>Created</th>
-        <td th:text="${customer.createdDate}"></td>
-    </tr>
+        <tr>
+            <th>Email</th>
+            <td th:text="${customer.email}"></td>
+        </tr>
 
-</table>
+        <tr>
+            <th>Created</th>
+            <td th:text="${customer.createdDate}"></td>
+        </tr>
 
-<br>
+    </table>
 
-<a th:href="@{/customers}">
-    Back
-</a>
+    <br>
 
+    <a th:href="@{/customers}">
+        Back
+    </a>
+</div>
 </body>
 </html>
