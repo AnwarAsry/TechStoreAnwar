@@ -11,13 +11,24 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "product_name")
     private String productName;
     private int rating;
     private String comment;
+    @Column(name = "review_date")
     private LocalDate reviewDate;
+    @Column(name = "reviewer_name")
     private String reviewerName;
 
     public Review() {
+    }
+    
+    public Review(String productName, int rating, String comment, LocalDate reviewDate, String reviewerName) {
+        this.productName = productName;
+        this.rating = rating;
+        this.comment = comment;
+        this.reviewDate = reviewDate;
+        this.reviewerName = reviewerName;
     }
 
     public Review(Long id, String productName, int rating, String comment, LocalDate reviewDate, String reviewerName) {

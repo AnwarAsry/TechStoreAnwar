@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout">
 
 <head>
     <meta charset="UTF-8">
@@ -9,35 +9,38 @@
 
 <body>
 
-<h1>Edit Customer</h1>
+<div layout:fragment="content">
 
-<form th:action="@{/customers/{id}(id=${customer.id})}"
-      th:object="${customer}"
-      method="post">
+    <h2>Edit Customer</h2>
 
-    <input type="hidden" name="_method" value="PUT"/>
+    <form th:action="@{/customers/{id}(id=${customer.id})}"
+          th:object="${customer}"
+          method="post">
 
-    <label>Name</label><br>
-    <input type="text" th:field="*{name}">
-    <br><br>
+        <input type="hidden" name="_method" value="PUT"/>
 
-    <label>Telephone</label><br>
-    <input type="text" th:field="*{telefonNumber}">
-    <br><br>
+        <label>Name</label><br>
+        <input type="text" th:field="*{name}">
+        <br><br>
 
-    <label>Email</label><br>
-    <input type="email" th:field="*{email}">
-    <br><br>
+        <label>Telephone</label><br>
+        <input type="text" th:field="*{telefonNumber}">
+        <br><br>
 
-    <button type="submit">Update</button>
+        <label>Email</label><br>
+        <input type="email" th:field="*{email}">
+        <br><br>
 
-</form>
+        <button type="submit">Update</button>
 
-<br>
+    </form>
 
-<a th:href="@{/customers}">
-    Back
-</a>
+    <br>
 
+    <a th:href="@{/customers}">
+        Back
+    </a>
+
+</div>
 </body>
 </html>

@@ -1,20 +1,19 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout">
 
 <head>
     <meta charset="UTF-8">
     <title>Clients</title>
 
     <style>
-
         /* Page */
 
         body {
             font-family: 'Segoe UI', Arial;
             background: #f5f6f8;
             margin: 0;
-            padding: 30px;
+            padding: 0;
         }
 
         /* Header */
@@ -23,6 +22,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-top: 25px;
             margin-bottom: 20px;
         }
 
@@ -30,7 +30,6 @@
             margin: 0;
         }
 
-        /* ADD BUTTON */
 
         .add-btn {
             background: #22c55e;
@@ -125,113 +124,117 @@
 
 <body>
 
-<!-- Header -->
+<div layout:fragment="content">
 
-<div class="header">
+    <!-- Header -->
 
-    <h2>Customer</h2>
+    <div class="header">
 
-    <a th:href="@{/customers/new}"
-       class="add-btn">
-        Add customer
-    </a>
+        <h2>Customer</h2>
 
-</div>
+        <a th:href="@{/customers/new}"
+           class="add-btn">
+            Add customer
+        </a>
 
-<!-- Table -->
+    </div>
 
-<table>
+    <!-- Table -->
 
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Phone number</th>
-        <th>Created</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
+    <table>
 
-    <tbody>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone number</th>
+            <th>Created</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
 
-    <tr th:each="customer, stat : ${customers}">
+        <tbody>
 
-        <!-- ID -->
-        <td th:text="${customer.id}"></td>
+        <tr th:each="customer, stat : ${customers}">
 
-        <!-- Name -->
-        <td>
+            <!-- ID -->
+            <td th:text="${customer.id}"></td>
 
-            <div class="person-cell">
+            <!-- Name -->
+            <td>
 
-                <!-- Avatar -->
-                <div class="avatar"
-                     th:classappend="' c' + (${stat.index}%5 + 1)"
-                     th:text="${#strings.substring(
+                <div class="person-cell">
+
+                    <!-- Avatar -->
+                    <div class="avatar"
+                         th:classappend="' c' + (${stat.index}%5 + 1)"
+                         th:text="${#strings.substring(
                      customer.name,0,1)}">
-                </div>
+                    </div>
 
-                <!-- Name-->
-                <div>
+                    <!-- Name-->
+                    <div>
 
-                    <div class="name"
-                         th:text="${customer.name}">
+                        <div class="name"
+                             th:text="${customer.name}">
+                        </div>
+
                     </div>
 
                 </div>
 
-            </div>
+            </td>
 
-        </td>
+            <!-- Email -->
+            <td th:text="${customer.email}"></td>
 
-        <!-- Email -->
-        <td th:text="${customer.email}"></td>
+            <!-- Phone number -->
+            <td th:text="${customer.telefonNumber}"></td>
 
-        <!-- Phone number -->
-        <td th:text="${customer.telefonNumber}"></td>
-
-        <!-- Created -->
-        <td th:text="${#temporals.format(
+            <!-- Created -->
+            <td th:text="${#temporals.format(
         customer.createdDate,
         'yyyy-MM-dd HH:mm')}">
-        </td>
+            </td>
 
-        <!-- Actions -->
-        <td class="actions">
+            <!-- Actions -->
+            <td class="actions">
 
-            <a th:href="@{/customers/{id}(id=${customer.id})}"
-               class="info">
-                Info
-            </a>
+                <a th:href="@{/customers/{id}(id=${customer.id})}"
+                   class="info">
+                    Info
+                </a>
 
-            <a th:href="@{/customers/{id}/edit(id=${customer.id})}"
-               class="update">
-                Update
-            </a>
+                <a th:href="@{/customers/{id}/edit(id=${customer.id})}"
+                   class="update">
+                    Update
+                </a>
 
-            <form th:action="@{/customers/{id}(id=${customer.id})}"
-                  method="post"
-                  style="display:inline">
+                <form th:action="@{/customers/{id}(id=${customer.id})}"
+                      method="post"
+                      style="display:inline">
 
-                <input type="hidden"
-                       name="_method"
-                       value="DELETE"/>
+                    <input type="hidden"
+                           name="_method"
+                           value="DELETE"/>
 
-                <button class="delete"
-                        style="border:none;color:white;padding:6px 10px;border-radius:6px;">
-                    Delete
-                </button>
+                    <button class="delete"
+                            style="border:none;color:white;padding:6px 10px;border-radius:6px;">
+                        Delete
+                    </button>
 
-            </form>
+                </form>
 
-        </td>
+            </td>
 
-    </tr>
+        </tr>
 
-    </tbody>
+        </tbody>
 
-</table>
+    </table>
+
+</div>
 
 </body>
 </html>
