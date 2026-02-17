@@ -37,4 +37,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: AnwarAsry/TechStore:1.0.0
+          tags: AnwarAsry/techstore:1.0.0
