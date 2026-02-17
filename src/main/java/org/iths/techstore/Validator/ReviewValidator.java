@@ -39,7 +39,7 @@ public class ReviewValidator {
 
     // Rating valid
     private void checkRating(int rating) {
-        if (rating < 0 || rating > 100) {
+        if (rating < 0 || rating > 10) {
             throw new ReviewNotValidException("Review rating is not valid");
         }
     }
