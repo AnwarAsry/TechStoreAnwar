@@ -11,35 +11,35 @@
 
 <div layout:fragment="content">
 
-<h2>Edit Customer</h2>
+    <h2>Edit Customer</h2>
 
-<form th:action="@{/customers/{id}(id=${customer.id})}"
-      th:object="${customer}"
-      method="post">
+    <form th:action="@{/customers/{id}(id=${customer.id})}"
+          th:object="${customer}"
+          method="post">
 
-    <input type="hidden" name="_method" value="PUT"/>
+        <input type="hidden" name="_method" value="PUT"/>
 
-    <label>Name</label><br>
-    <input type="text" th:field="*{name}">
-    <br><br>
+        <label>Name</label><br>
+        <input type="text" th:field="*{name}">
+        <br><br>
 
-    <label>Telephone</label><br>
-    <input type="text" th:field="*{telefonNumber}">
-    <br><br>
+        <label>Telephone</label><br>
+        <input type="text" th:field="*{telefonNumber}">
+        <br><br>
 
-    <label>Email</label><br>
-    <input type="email" th:field="*{email}">
-    <br><br>
+        <label>Email</label><br>
+        <input type="email" th:field="*{email}">
+        <br><br>
 
-    <button type="submit">Update</button>
+        <button type="submit">Update</button>
 
-</form>
+    </form>
 
-<br>
+    <br>
 
-<a th:href="@{/customers}">
-    Back
-</a>
+    <a th:href="@{/customers}">
+        Back
+    </a>
 
 </div>
 </body>

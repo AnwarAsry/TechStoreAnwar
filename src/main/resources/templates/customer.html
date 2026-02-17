@@ -11,37 +11,37 @@
 
 <div layout:fragment="content">
 
-<h2>Customer Information</h2>
+    <h2>Customer Information</h2>
 
-<table>
+    <table>
 
-    <tr>
-        <th>Name</th>
-        <td th:text="${customer.name}"></td>
-    </tr>
+        <tr>
+            <th>Name</th>
+            <td th:text="${customer.name}"></td>
+        </tr>
 
-    <tr>
-        <th>Telephone</th>
-        <td th:text="${customer.telefonNumber}"></td>
-    </tr>
+        <tr>
+            <th>Telephone</th>
+            <td th:text="${customer.telefonNumber}"></td>
+        </tr>
 
-    <tr>
-        <th>Email</th>
-        <td th:text="${customer.email}"></td>
-    </tr>
+        <tr>
+            <th>Email</th>
+            <td th:text="${customer.email}"></td>
+        </tr>
 
-    <tr>
-        <th>Created</th>
-        <td th:text="${customer.createdDate}"></td>
-    </tr>
+        <tr>
+            <th>Created</th>
+            <td th:text="${customer.createdDate}"></td>
+        </tr>
 
-</table>
+    </table>
 
-<br>
+    <br>
 
-<a th:href="@{/customers}">
-    Back
-</a>
+    <a th:href="@{/customers}">
+        Back
+    </a>
 </div>
 </body>
 </html>
