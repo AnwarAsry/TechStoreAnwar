@@ -34,3 +34,6 @@ build/
 
 ### Logs ###
 /src/main/resources/logback-spring.xml
+logs/
+*.log
+*.log.*
